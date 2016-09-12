@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef DEVICEINTERFACE_H_
 #define DEVICEINTERFACE_H_
 
-#include "PluginInterface.h"
+#include "ClientHook.h"
 
 class InputDeviceFactory
 {
@@ -52,7 +52,7 @@ public:
 	virtual bool createDevice(std::string type, std::string parameters) = 0;
 };
 
-class DeviceInterface : public PluginFW::PluginInterface {
+class DeviceInterface : public PluginFW::ClientHook {
 public:
 	virtual void addInputDeviceFactory(InputDeviceFactory* factory) = 0;
 

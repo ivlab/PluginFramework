@@ -50,9 +50,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace PluginFW {
 
-class PluginInterface {
+class ClientHook {
 public:
-	virtual ~PluginInterface() {}
+	virtual ~ClientHook() {}
 
 	virtual std::string getName() = 0;
 	virtual const std::type_info& getType() = 0;
@@ -72,7 +72,7 @@ public:
 			return NULL;
 		}
 
-		return dynamic_cast<T*>(this);
+		return static_cast<T*>(this);
 	}
 };
 

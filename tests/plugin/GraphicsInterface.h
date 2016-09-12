@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef GRAPHICSINTERFACE_H_
 #define GRAPHICSINTERFACE_H_
 
-#include "PluginInterface.h"
+#include "ClientHook.h"
 
 class GraphicsDriver
 {
@@ -52,7 +52,7 @@ public:
 	virtual void draw() = 0;
 };
 
-class GraphicsInterface : public PluginFW::PluginInterface {
+class GraphicsInterface : public PluginFW::ClientHook {
 public:
 	virtual void addGraphicsDriver(std::string name, GraphicsDriver* driver) = 0;
 

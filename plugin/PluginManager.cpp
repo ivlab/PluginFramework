@@ -45,19 +45,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace PluginFW {
 
-PluginManager::PluginManager() : _interfaces() {
+PluginManager::PluginManager() : _hooks() {
 }
 
 
-PluginManager::PluginManager(std::vector<PluginInterface*> interfaces) : _interfaces(interfaces) {
+PluginManager::PluginManager(std::vector<ClientHook*> hooks) : _hooks(hooks) {
 }
 
 PluginManager::~PluginManager() {
 	for (int f = 0; f < _plugins.size(); f++)
 	{
-		for (int i = 0; i < _interfaces.size(); i++)
+		for (int i = 0; i < _hooks.size(); i++)
 		{
-			_plugins[f]->unregisterPlugin(_interfaces[i]);
+			_plugins[f]->unregisterPlugin(_hooks[i]);
 		}
 
 		delete _plugins[f];
@@ -69,8 +69,8 @@ PluginManager::~PluginManager() {
 	}
 }
 
-void PluginManager::addInterface(PluginInterface* iface) {
-	_interfaces.push_back(iface);
+void PluginManager::addInterface(ClientHook* hook) {
+	_hooks.push_back(hook);
 }
 
 void PluginManager::loadPlugin(const std::string& filePath, const std::string& name) {
@@ -86,15 +86,15 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 	if (lib->isLoaded())
 	{
 		typedef int version_t();
-		version_t* getVersion = lib->loadSymbol<version_t>("getPluginFrameworkVersion");
-		if (getVersion() != getPluginFrameworkVersion())
+		version_t* getVersion = lib->loadSymbol<version_t>("getPluginFWVersion");
+		if (getVersion() != getPluginFWVersion())
 		{
 			//MinVR::Logger::getInstance().assertMessage(false, "Cannot load plugin: " + path + " - Incorrect framework version");
 			return;
 		}
 
 		typedef FrameworkPlugin* load_t();
-		load_t* loadPlugin = lib->loadSymbol<load_t>("loadPlugin");
+		load_t* loadPlugin = lib->loadSymbol<load_t>("loadFWPlugin");
 		if (loadPlugin == NULL)
 		{
 			return;
@@ -102,9 +102,9 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 
 		FrameworkPlugin* plugin = loadPlugin();
 		int countRegistered = 0;
-		for (int f = 0; f < _interfaces.size(); f++)
+		for (int f = 0; f < _hooks.size(); f++)
 		{
-			if (plugin->registerPlugin(_interfaces[f]))
+			if (plugin->registerPlugin(_hooks[f]))
 			{
 				countRegistered++;
 			}

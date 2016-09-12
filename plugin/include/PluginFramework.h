@@ -43,11 +43,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef PLUGINFRAMEWORK_H_
 #define PLUGINFRAMEWORK_H_
 
-#include "PluginInterface.h"
+#include "ClientHook.h"
 
 namespace PluginFW {
 
-#define PLUGIN_FRAMEWORK_VERSION 0
+#define PLUGIN_FW_VERSION 1
 
 #if defined(WIN32)
 #define PLUGIN_API __declspec(dllexport)
@@ -59,8 +59,8 @@ class FrameworkPlugin {
 public:
 	virtual ~FrameworkPlugin() {}
 
-	virtual bool registerPlugin(PluginInterface* iface) = 0;
-	virtual bool unregisterPlugin(PluginInterface* iface) = 0;
+	virtual bool registerPlugin(ClientHook* hook) = 0;
+	virtual bool unregisterPlugin(ClientHook* hook) = 0;
 };
 
 } /* namespace MinVR */

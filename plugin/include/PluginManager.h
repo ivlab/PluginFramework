@@ -46,7 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <vector>
 #include "SharedLibrary.h"
-#include "PluginInterface.h"
+#include "ClientHook.h"
 #include "PluginFramework.h"
 
 namespace PluginFW {
@@ -54,15 +54,15 @@ namespace PluginFW {
 class PluginManager {
 public:
 	PluginManager();
-	PluginManager(std::vector<PluginInterface*> interfaces);
+	PluginManager(std::vector<ClientHook*> hooks);
 	virtual ~PluginManager();
 
-	void addInterface(PluginInterface* iface);
+	void addInterface(ClientHook* hook);
 
 	void loadPlugin(const std::string& filePath, const std::string& name);
 
 private:
-	std::vector<PluginInterface*> _interfaces;
+	std::vector<ClientHook*> _hooks;
 	std::vector<FrameworkPlugin*> _plugins;
 	std::vector<SharedLibrary*> _libraries;
 };
