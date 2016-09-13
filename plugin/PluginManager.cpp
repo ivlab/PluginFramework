@@ -42,6 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "PluginManager.h"
 #include "Plugin.h"
+#include <iostream>
 
 namespace PluginFW {
 
@@ -89,7 +90,7 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 		version_t* getVersion = lib->loadSymbol<version_t>("getPluginFWVersion");
 		if (getVersion() != getPluginFWVersion())
 		{
-			//MinVR::Logger::getInstance().assertMessage(false, "Cannot load plugin: " + path + " - Incorrect framework version");
+			std::cerr << "Cannot load plugin: " << path << " - Incorrect framework version" << std::endl;
 			return;
 		}
 
@@ -97,6 +98,7 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 		load_t* loadPlugin = lib->loadSymbol<load_t>("loadFWPlugin");
 		if (loadPlugin == NULL)
 		{
+			std::cerr << "Cannot load symbol: " << "loadFWPlugin" << std::endl;
 			return;
 		}
 

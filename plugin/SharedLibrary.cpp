@@ -41,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ================================================================================ */
 
 #include "SharedLibrary.h"
+#include <iostream>
 
 namespace PluginFW {
 
@@ -68,7 +69,7 @@ void SharedLibrary::load() {
 #endif
 
 		if (!_lib) {
-			//MinVR::Logger::getInstance().assertMessage(false, "Could not load library: " + _filePath + " - " + error);
+			std::cerr << "Could not load library: " << _filePath << " - " << error << std::endl;
 			return;
 		}
 
@@ -88,7 +89,7 @@ void SharedLibrary::unload() {
 		error = dlerror();
 #endif
 		if(result != 0) {
-			//MinVR::Logger::getInstance().assertMessage(false, "Could not unload library: " + _filePath + " - " + error);
+			std::cerr << "Could not unload library: " << _filePath << " - " << error << std::endl;
 			return;
 		}
 
