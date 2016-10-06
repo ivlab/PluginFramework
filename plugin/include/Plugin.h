@@ -45,10 +45,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "PluginFramework.h"
 #include <memory>
+#include <vector>
 
 namespace PluginFW {
 
 class Plugin : public FrameworkPlugin {
+};
+
+typedef PluginAPI PluginAPIInfo;
+
+template<typename T>
+class SpecificPlugin : public Plugin {
+public:
+	virtual ~SpecificPlugin() {}
+
+	bool registerPlugin(PluginAPI* api);
+	bool unregisterPlugin(PluginAPI* api);
+
+protected:
+	virtual void registerPlugin(T& api, PluginAPIInfo& apiInfo) = 0;
+	virtual void unregisterPlugin(T& api, PluginAPIInfo& apiInfo) = 0;
+};
+
+class CompositePlugin : public Plugin {
+public:
+	CompositePlugin(const std::vector<Plugin*> plugins);
+	virtual ~CompositePlugin();
+
+	bool registerPlugin(PluginAPI* api);
+	bool unregisterPlugin(PluginAPI* api);
+
+private:
+	std::vector<Plugin*> plugins;
 };
 
 } /* namespace MinVR */
@@ -58,6 +86,50 @@ extern "C"
 {
 	PLUGIN_API int getPluginFWVersion() {
 		return PLUGIN_FW_VERSION;
+	}
+}
+
+template<typename T>
+inline bool PluginFW::SpecificPlugin<T>::registerPlugin(PluginFW::PluginAPI* api) {
+	T* iface = api->get();
+	if (iface) {
+		registerPlugin(*iface, *api);
+		return true;
+	}
+
+	return false;
+}
+
+template<typename T>
+inline bool PluginFW::SpecificPlugin<T>::unregisterPlugin(PluginFW::PluginAPI* api) {
+	T* iface = api->get();
+	if (iface) {
+		unregisterPlugin(*iface, *api);
+		return true;
+	}
+
+	return false;
+}
+
+inline PluginFW::CompositePlugin::CompositePlugin(
+		const std::vector<Plugin*> plugins) : plugins(plugins) {
+}
+
+inline PluginFW::CompositePlugin::~CompositePlugin() {
+	for (int f = 0; f < plugins.size(); f++) {
+		delete plugins[f];
+	}
+}
+
+inline bool PluginFW::CompositePlugin::registerPlugin(PluginAPI* api) {
+	for (int f = 0; f < plugins.size(); f++) {
+		plugins[f]->registerPlugin(api);
+	}
+}
+
+inline bool PluginFW::CompositePlugin::unregisterPlugin(PluginAPI* api) {
+	for (int f = 0; f < plugins.size(); f++) {
+		plugins[f]->unregisterPlugin(api);
 	}
 }
 
