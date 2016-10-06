@@ -55,9 +55,9 @@ class Plugin : public FrameworkPlugin {
 typedef PluginAPI PluginAPIInfo;
 
 template<typename T>
-class SpecificPlugin : public Plugin {
+class TypedPlugin : public Plugin {
 public:
-	virtual ~SpecificPlugin() {}
+	virtual ~TypedPlugin() {}
 
 	bool registerPlugin(PluginAPI* api);
 	bool unregisterPlugin(PluginAPI* api);
@@ -90,7 +90,7 @@ extern "C"
 }
 
 template<typename T>
-inline bool PluginFW::SpecificPlugin<T>::registerPlugin(PluginFW::PluginAPI* api) {
+inline bool PluginFW::TypedPlugin<T>::registerPlugin(PluginFW::PluginAPI* api) {
 	T* iface = api->get();
 	if (iface) {
 		registerPlugin(*iface, *api);
@@ -101,7 +101,7 @@ inline bool PluginFW::SpecificPlugin<T>::registerPlugin(PluginFW::PluginAPI* api
 }
 
 template<typename T>
-inline bool PluginFW::SpecificPlugin<T>::unregisterPlugin(PluginFW::PluginAPI* api) {
+inline bool PluginFW::TypedPlugin<T>::unregisterPlugin(PluginFW::PluginAPI* api) {
 	T* iface = api->get();
 	if (iface) {
 		unregisterPlugin(*iface, *api);
