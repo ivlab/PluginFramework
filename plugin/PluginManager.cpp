@@ -46,22 +46,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace PluginFW {
 
-PluginManager::PluginManager() : _hooks() {
+PluginManager::PluginManager() : _pluginAPIs() {
 }
 
 
-PluginManager::PluginManager(std::vector<ClientHook*> hooks) : _hooks(hooks) {
+PluginManager::PluginManager(std::vector<PluginAPI*> apis) : _pluginAPIs(apis) {
 }
 
 PluginManager::~PluginManager() {
 	for (int f = 0; f < _plugins.size(); f++)
 	{
-		for (int i = 0; i < _hooks.size(); i++)
+		for (int i = 0; i < _pluginAPIs.size(); i++)
 		{
-			_plugins[f]->unregisterPlugin(_hooks[i]);
+			_plugins[f]->unregisterPlugin(_pluginAPIs[i]);
 		}
 
 		delete _plugins[f];
+	}
+
+	for (int i = 0; i < _pluginAPIs.size(); i++)
+	{
+		delete _pluginAPIs[i];
 	}
 
 	for (int f = 0; f < _libraries.size(); f++)
@@ -70,8 +75,8 @@ PluginManager::~PluginManager() {
 	}
 }
 
-void PluginManager::addInterface(ClientHook* hook) {
-	_hooks.push_back(hook);
+void PluginManager::addInterfaceInternal(PluginAPI* api) {
+	_pluginAPIs.push_back(api);
 }
 
 void PluginManager::loadPlugin(const std::string& filePath, const std::string& name) {
@@ -104,9 +109,9 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 
 		FrameworkPlugin* plugin = loadPlugin();
 		int countRegistered = 0;
-		for (int f = 0; f < _hooks.size(); f++)
+		for (int f = 0; f < _pluginAPIs.size(); f++)
 		{
-			if (plugin->registerPlugin(_hooks[f]))
+			if (plugin->registerPlugin(_pluginAPIs[f]))
 			{
 				countRegistered++;
 			}
