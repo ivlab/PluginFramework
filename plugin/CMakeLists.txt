@@ -5,7 +5,6 @@ project (PluginFW)
 set (${PROJECT_NAME}_source_files 
 	include/Plugin.h
 	include/PluginFramework.h
-	include/ClientHook.h
 	include/PluginManager.h
 	include/SharedLibrary.h
 	SharedLibrary.cpp

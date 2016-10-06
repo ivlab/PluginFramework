@@ -96,4 +96,4 @@ add_subdirectory (plugin)
 
 # Now, build some programs, such as tests, that depend upon the MinVR libraries:
 
-#add_subdirectory (tests/plugin)
+add_subdirectory (tests/plugin)

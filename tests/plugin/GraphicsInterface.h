@@ -43,8 +43,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef GRAPHICSINTERFACE_H_
 #define GRAPHICSINTERFACE_H_
 
-#include "ClientHook.h"
-
 class GraphicsDriver
 {
 public:
@@ -52,14 +50,9 @@ public:
 	virtual void draw() = 0;
 };
 
-class GraphicsInterface : public PluginFW::ClientHook {
+class GraphicsInterface {
 public:
 	virtual void addGraphicsDriver(std::string name, GraphicsDriver* driver) = 0;
-
-	std::string getName() { return "GraphicsInterface"; }
-	const std::type_info& getType() { return typeid(GraphicsInterface); }
-	int getMinVersion() { return getVersion(); }
-	static int getVersion() { return 0; }
 };
 
 #endif /* GRAPHICSINTERFACE_H_ */

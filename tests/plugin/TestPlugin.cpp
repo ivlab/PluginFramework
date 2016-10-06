@@ -55,11 +55,11 @@ public:
 	PLUGIN_API virtual ~TestPlugin() {
 		std::cout << "TestPlugin destroyed." << std::endl;
 	}
-	PLUGIN_API bool registerPlugin(PluginFW::ClientHook *hook)
+	PLUGIN_API bool registerPlugin(PluginFW::PluginAPI *api)
 	{
-		std::cout << "Registering TestPlugin with the following interface: " << hook->getName() << std::endl;
+		std::cout << "Registering TestPlugin with the following interface: " << api->getName() << std::endl;
 
-		GraphicsInterface* graphicsInterface = hook->getInterface<GraphicsInterface>();
+		GraphicsInterface* graphicsInterface = api->get();
 		if (graphicsInterface != NULL)
 		{
 			graphicsInterface->addGraphicsDriver("opengl", new OpenGLGraphicsDriver());
@@ -67,7 +67,7 @@ public:
 			return true;
 		}
 
-		DeviceInterface* deviceInterface = hook->getInterface<DeviceInterface>();
+		DeviceInterface* deviceInterface = api->get();
 		if (deviceInterface != NULL)
 		{
 			deviceInterface->addInputDeviceFactory(new VRPNFactory());
@@ -77,9 +77,9 @@ public:
 
 		return false;
 	}
-	PLUGIN_API bool unregisterPlugin(PluginFW::ClientHook *hook)
+	PLUGIN_API bool unregisterPlugin(PluginFW::PluginAPI *api)
 	{
-		std::cout << "Unregistering TestPlugin with the following interface: " << hook->getName() << std::endl;
+		std::cout << "Unregistering TestPlugin with the following interface: " << api->getName() << std::endl;
 
 		return true;
 	}
