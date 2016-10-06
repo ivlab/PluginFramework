@@ -147,22 +147,13 @@ inline PluginFW::PluginAPI& PluginFW::PluginAPI::get() {
 	return *this;
 }
 
-//template<typename T>
-//inline SpecificPluginAPI<T>& PluginFW::PluginAPI::getInterface() {
-//	static SpecificPluginAPI<T> iface = SpecificPluginAPI<T>(NULL);
-//
-//	if (getType() != typeid(T))
-//	{
-//		return iface;
-//	}
-//
-//	if (this->getMinVersion() > T::getVersion())
-//	{
-//		std::cout << "Cannot use plugin for interface " << getName() << " as the minimum version is " << this->getMinVersion() << " but found " << T::getVersion() << std::endl;
-//		return iface;
-//	}
-//
-//	return *(static_cast<SpecificPluginAPI<T>*>(this));
-//}
+#define addPluginAPISpecification(name, T, version, minVersion) \
+namespace PluginFW { \
+	template<> class PluginAPISpecification<T> { \
+	public: \
+	typedef PluginFW::VersionedPluginAPI<T, version, minVersion> API; \
+	static std::string getName() { return name; } \
+}; \
+}
 
 #endif /* PLUGINAPI_H_ */
