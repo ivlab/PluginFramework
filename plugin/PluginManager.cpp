@@ -88,6 +88,11 @@ void PluginManager::loadPlugin(const std::string& filePath, const std::string& n
 	std::string path = filePath + "/lib/lib" + name + ".so";
 #endif
 
+	loadPlugin(path);
+}
+
+void PluginManager::loadPlugin(const std::string& path) {
+
 	SharedLibrary* lib = new SharedLibrary(path);
 	if (lib->isLoaded())
 	{

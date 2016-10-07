@@ -57,6 +57,7 @@ public:
 	PluginManager(std::vector<PluginAPI*> pluginAPIs);
 	virtual ~PluginManager();
 
+	void loadPlugin(const std::string& filePath);
 	void loadPlugin(const std::string& filePath, const std::string& name);
 
 	template<typename T>

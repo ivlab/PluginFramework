@@ -122,15 +122,26 @@ inline PluginFW::CompositePlugin::~CompositePlugin() {
 }
 
 inline bool PluginFW::CompositePlugin::registerPlugin(PluginAPI* api) {
+	bool registered = false;
+
 	for (int f = 0; f < plugins.size(); f++) {
-		plugins[f]->registerPlugin(api);
+		if (plugins[f]->registerPlugin(api)) {
+			registered = true;
+		}
 	}
+
+	return registered;
 }
 
 inline bool PluginFW::CompositePlugin::unregisterPlugin(PluginAPI* api) {
+	bool unregistered = false;
+
 	for (int f = 0; f < plugins.size(); f++) {
 		plugins[f]->unregisterPlugin(api);
+		unregistered = true;
 	}
+
+	return unregistered;
 }
 
 /*
