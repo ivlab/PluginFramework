@@ -72,6 +72,7 @@ public:
 	CompositePlugin(const std::vector<Plugin*> plugins);
 	virtual ~CompositePlugin();
 
+	void addPlugin(Plugin* plugin);
 	bool registerPlugin(PluginAPI* api);
 	bool unregisterPlugin(PluginAPI* api);
 
@@ -119,6 +120,10 @@ inline PluginFW::CompositePlugin::~CompositePlugin() {
 	for (int f = 0; f < plugins.size(); f++) {
 		delete plugins[f];
 	}
+}
+
+inline void PluginFW::CompositePlugin::addPlugin(Plugin* plugin) {
+	plugins.push_back(plugin);
 }
 
 inline bool PluginFW::CompositePlugin::registerPlugin(PluginAPI* api) {
