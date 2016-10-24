@@ -49,8 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace PluginFW {
 
-class Plugin : public FrameworkPlugin {
-};
+typedef  FrameworkPlugin Plugin;
 
 typedef PluginAPI PluginAPIInfo;
 
@@ -81,14 +80,6 @@ private:
 };
 
 } /* namespace MinVR */
-
-
-extern "C"
-{
-	PLUGIN_API int getPluginFWVersion() {
-		return PLUGIN_FW_VERSION;
-	}
-}
 
 template<typename T>
 inline bool PluginFW::TypedPlugin<T>::registerPlugin(PluginFW::PluginAPI* api) {

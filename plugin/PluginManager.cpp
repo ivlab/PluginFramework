@@ -42,6 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "PluginManager.h"
 #include "Plugin.h"
+#include "PluginVersion.h"
 #include <iostream>
 
 namespace PluginFW {
@@ -98,7 +99,7 @@ void PluginManager::loadPlugin(const std::string& path) {
 	{
 		typedef int version_t();
 		version_t* getVersion = lib->loadSymbol<version_t>("getPluginFWVersion");
-		if (getVersion() != getPluginFWVersion())
+		if (getVersion == NULL || getVersion() != getPluginFWVersion())
 		{
 			std::cerr << "Cannot load plugin: " << path << " - Incorrect framework version" << std::endl;
 			return;
