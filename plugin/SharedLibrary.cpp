@@ -83,6 +83,9 @@ void SharedLibrary::unload() {
 		const char* error;
 #if defined(WIN32)
 		BOOL result = FreeLibrary(_lib);
+		if(result != 0) {
+			result = UnmapViewOfFile(_lib);
+		}
 #else
 		dlerror();
 		int result = dlclose(_lib);
