@@ -55,7 +55,7 @@ public:
 	PLUGIN_API virtual ~TestPlugin() {
 		std::cout << "TestPlugin destroyed." << std::endl;
 	}
-	PLUGIN_API bool registerPlugin(PluginFW::PluginAPI *api)
+	PLUGIN_API bool registerPlugin(PluginFW::PluginAPI *api, PluginFW::PluginInfo& info)
 	{
 		std::cout << "Registering TestPlugin with the following interface: " << api->getName() << std::endl;
 

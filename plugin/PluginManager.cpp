@@ -117,7 +117,10 @@ void PluginManager::loadPlugin(const std::string& path) {
 		int countRegistered = 0;
 		for (int f = 0; f < _pluginAPIs.size(); f++)
 		{
-			if (plugin->registerPlugin(_pluginAPIs[f]))
+			PluginInfo info;
+			info.pluginPath = path;
+
+			if (plugin->registerPlugin(_pluginAPIs[f], info))
 			{
 				countRegistered++;
 			}

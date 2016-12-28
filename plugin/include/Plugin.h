@@ -58,11 +58,11 @@ class TypedPlugin : public Plugin {
 public:
 	virtual ~TypedPlugin() {}
 
-	bool registerPlugin(PluginAPI* api);
+	bool registerPlugin(PluginAPI* api, PluginInfo& info);
 	bool unregisterPlugin(PluginAPI* api);
 
 protected:
-	virtual void registerPlugin(T& api, PluginAPIInfo& apiInfo) = 0;
+	virtual void registerPlugin(T& api, PluginAPIInfo& apiInfo, PluginInfo& info) = 0;
 	virtual void unregisterPlugin(T& api, PluginAPIInfo& apiInfo) = 0;
 };
 
@@ -72,7 +72,7 @@ public:
 	virtual ~CompositePlugin();
 
 	void addPlugin(Plugin* plugin);
-	bool registerPlugin(PluginAPI* api);
+	bool registerPlugin(PluginAPI* api, PluginInfo& info);
 	bool unregisterPlugin(PluginAPI* api);
 
 private:
@@ -82,10 +82,10 @@ private:
 } /* namespace MinVR */
 
 template<typename T>
-inline bool PluginFW::TypedPlugin<T>::registerPlugin(PluginFW::PluginAPI* api) {
+inline bool PluginFW::TypedPlugin<T>::registerPlugin(PluginFW::PluginAPI* api, PluginInfo& info) {
 	T* iface = api->get();
 	if (iface) {
-		registerPlugin(*iface, *api);
+		registerPlugin(*iface, *api, info);
 		return true;
 	}
 
@@ -117,11 +117,11 @@ inline void PluginFW::CompositePlugin::addPlugin(Plugin* plugin) {
 	plugins.push_back(plugin);
 }
 
-inline bool PluginFW::CompositePlugin::registerPlugin(PluginAPI* api) {
+inline bool PluginFW::CompositePlugin::registerPlugin(PluginAPI* api, PluginInfo& info) {
 	bool registered = false;
 
 	for (int f = 0; f < plugins.size(); f++) {
-		if (plugins[f]->registerPlugin(api)) {
+		if (plugins[f]->registerPlugin(api, info)) {
 			registered = true;
 		}
 	}
