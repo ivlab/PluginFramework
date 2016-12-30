@@ -59,6 +59,7 @@ public:
 
 	void loadPlugin(const std::string& filePath);
 	void loadPlugin(const std::string& filePath, const std::string& name);
+	void setUserData(void* userData);
 
 	template<typename T>
 	void addInterface(T* api);
@@ -70,6 +71,7 @@ private:
 	std::vector<PluginAPI*> _pluginAPIs;
 	std::vector<FrameworkPlugin*> _plugins;
 	std::vector<SharedLibrary*> _libraries;
+	void* userData;
 };
 
 } /* namespace extend */

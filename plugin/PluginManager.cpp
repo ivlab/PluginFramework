@@ -80,6 +80,10 @@ void PluginManager::addInterfaceInternal(PluginAPI* api) {
 	_pluginAPIs.push_back(api);
 }
 
+void PluginManager::setUserData(void* userData) {
+	this->userData = userData;
+}
+
 void PluginManager::loadPlugin(const std::string& filePath, const std::string& name) {
 #if defined(WIN32)
 	std::string path = filePath + "/bin/" + name + ".dll";
@@ -116,6 +120,7 @@ void PluginManager::loadPlugin(const std::string& path) {
 		FrameworkPlugin* plugin = loadPlugin();
 		PluginInfo info;
 		info.path = path;
+		info.userData = userData;
 		plugin->initialize(info);
 
 		int countRegistered = 0;
