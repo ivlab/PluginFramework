@@ -114,6 +114,10 @@ void PluginManager::loadPlugin(const std::string& path) {
 		}
 
 		FrameworkPlugin* plugin = loadPlugin();
+		PluginInfo info;
+		info.path = path;
+		plugin->initialize(info);
+
 		int countRegistered = 0;
 		for (int f = 0; f < _pluginAPIs.size(); f++)
 		{

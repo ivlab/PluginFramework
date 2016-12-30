@@ -44,10 +44,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define PLUGINFRAMEWORK_H_
 
 #include "PluginAPI.h"
+#include <string>
 
 namespace PluginFW {
 
-#define PLUGIN_FW_VERSION 2
+#define PLUGIN_FW_VERSION 4
 
 #if defined(WIN32)
 #define PLUGIN_API __declspec(dllexport)
@@ -55,10 +56,16 @@ namespace PluginFW {
 #define PLUGIN_API
 #endif
 
+struct PluginInfo {
+	std::string path;
+	void* userData;
+};
+
 class FrameworkPlugin {
 public:
 	virtual ~FrameworkPlugin() {}
 
+	virtual void initialize(const PluginInfo& info) {}
 	virtual bool registerPlugin(PluginAPI* api) = 0;
 	virtual bool unregisterPlugin(PluginAPI* api) = 0;
 };
